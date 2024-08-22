@@ -1,0 +1,29 @@
+extends ../layout/index
+
+block contenido
+    .py-10
+        h1.text-4xl.my-10.font-extrabold.text-center Real
+            span.font-normal Estates 
+        h2.text-center.text-purple-700.font-bold.text-2xl= page 
+
+        .mt-8.mx-auto.max-w-md
+            .bg-white.py-8.px-4.shadow
+                form.space-y-5(method="POST" action="/auth/register")
+                    div
+                        label.block.text-sm.uppercase.text-gray-400.font-bold(for="name") Your Name
+                         input#name.w-full.px-2.py-2.border.border-gray-300.mt-2.rounded-md.placeholder-gray-300(placeholder="Your Name" type="text" name="name")
+                    div
+                        label.block.text-sm.uppercase.text-gray-400.font-bold(for="email") Your Email
+                         input#email.w-full.px-2.py-2.border.border-gray-300.mt-2.rounded-md.placeholder-gray-300(placeholder="Your Email" type="email" name="email")
+                    div
+                        label.block.text-sm.uppercase.text-gray-400.font-bold(for="password") Your Password
+                         input#password.w-full.px-2.py-2.border.border-gray-300.mt-2.rounded-md.placeholder-gray-300(placeholder="Your Password" type="password" name="password")
+                    div
+                        label.block.text-sm.uppercase.text-gray-400.font-bold(for="repeat_password") Repeat Password
+                         input#repeat_password.w-full.px-2.py-2.border.border-gray-300.mt-2.rounded-md.placeholder-gray-300(placeholder="Repeat Your Password" type="password" name="repeat_password")
+                    
+                    div.flex.items-center.justify-between
+                        a.text-gray-500.text-xs.my-2(href="/auth/login") ¿Do you have an Account? Login
+                        a.text-gray-500.text-xs.my-2(href="/auth/forgot-password") Forgot my Password
+
+                    input(type="submit" value="Create a new account" class="w-full bg-indigo-400 text-white hover:bg-indigo-500 py-2 cursor-pointer rounded-md")

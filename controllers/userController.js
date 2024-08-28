@@ -1,5 +1,7 @@
 import { check, validationResult} from 'express-validator';
-import Usuario from '../models/Usuario.js';
+import User from '../models/User.js';
+import { genId } from '../helpers/tokens.js';
+import { registerEmail } from '../helpers/emails.js';
 
 const formLogin = (req, res) => {
     res.render('auth/login', {
@@ -41,7 +43,7 @@ const register = async(req, res) => {
     }
 
     // Checking  duplicate users
-    const userExist = await Usuario.findOne({ where: { email: email } });
+    const userExist = await User.findOne({ where: { email: email } });
     if (userExist) {
         return res.render('auth/register', {
             page: 'Create Account',
@@ -52,19 +54,55 @@ const register = async(req, res) => {
             }
             });
     }
-    
-    // Encrypt password
-    //req.body.password = await bcrypt.hash(req.body.password, 10);
 
     // Save User
-    const usuario = await Usuario.create({
+    const user = await User.create({
         name,
         email,
         password,
-        token: 123456
+        token: genId()
     });
-    res.json(usuario);
+
+    // Send confirmation email
+    registerEmail({
+        name: user.name,
+        email: user.email,
+        token: user.token
+    })
+
+    // Confirmation Message
+    res.render('templates/message', { 
+        page: 'Account Created Successfully',
+        message: 'We have sent a confirmation email, please click on the link in the email to activate your account'
+    });
 }
+
+// confirm account function
+const confirm = async (req, res) => {
+
+    const { token} = req.params;
+    
+    // Token is valid?
+
+    const user = await User.findOne({ where: {token}});
+
+    if (!user) {
+        return res.render('auth/confirm-account', {
+            page: 'Error',
+            message: 'Invalid token. Please try again.',
+            error: true
+        });
+    }
+    else{
+        return res.render('auth/confirm-account', {
+            page: 'Success',
+            message: 'Your account has been confirmed successfully',
+            error: false
+        });
+    }
+
+    // Confirm account
+};
 
 const formForgotPassword = (req, res) => {
     res.render('auth/forgot-password', {
@@ -76,5 +114,6 @@ export {
     formLogin,
     formRegister,
     register,
-    formForgotPassword
+    formForgotPassword,
+    confirm
 }

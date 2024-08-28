@@ -1,5 +1,5 @@
 import express from 'express';
-import usuarioRoutes from './routes/usuarioRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import db from './config/db.js';
 
 // Create app
@@ -24,7 +24,7 @@ app.set('views', './views');
 
 // Public Folder
 app.use(express.static('public'));
-app.use('/auth', usuarioRoutes);
+app.use('/auth', userRoutes);
 
 
 

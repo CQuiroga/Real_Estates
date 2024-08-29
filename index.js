@@ -1,4 +1,6 @@
 import express from 'express';
+import csrf from 'csurf';
+import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
 import db from './config/db.js';
 
@@ -7,6 +9,12 @@ const app = express();
 
 // Enable data from forms
 app.use( express.urlencoded({ extended: true}));
+
+// Cookie Parser Enabled
+app.use( cookieParser() );
+
+// Enable CSRF protection
+app.use( csrf({ cookie: true }) );
 
 // Connect to database
 try {

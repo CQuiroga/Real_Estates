@@ -1,13 +1,86 @@
 import { check, validationResult} from 'express-validator';
 import bcrypt from 'bcrypt';
 import User from '../models/User.js';
-import { genId } from '../helpers/tokens.js';
+import { genId, generateJWT } from '../helpers/tokens.js';
 import { registerEmail, forgotPassordrEmail } from '../helpers/emails.js';
 
 const formLogin = (req, res) => {
     res.render('auth/login', {
-        page: 'Login'
+        page: 'Login',
+        csrfToken: req.csrfToken()
     });
+}
+
+const auth = async (req, res) => {
+
+    await check('email').isEmail().withMessage('Please enter a valid email').run(req);
+    await check('password').notEmpty().withMessage('The password is required').run(req);
+
+    let result = validationResult(req);
+
+    if (!result.isEmpty()) {
+        return res.render('auth/login', {
+            page: 'Login',
+            csrfToken: req.csrfToken(),
+            errors: result.array()
+        });
+    } 
+
+
+    const { email, password } = req.body;
+    // User exist?
+    const user = await User.findOne({ where: { email }});
+
+    if (!user) {
+        return res.render('auth/login', {
+            page: 'Login',
+            csrfToken: req.csrfToken(),
+            errors: [{ msg: 'User no exists' }],
+            user : {
+                email: email
+            }
+        });
+    }
+
+    // User confirm?
+    if(!user.confirmed){
+        return res.render('auth/login', {
+            page: 'Login',
+            csrfToken: req.csrfToken(),
+            errors: [{ msg: `Your account don't have been confirmed` }],
+            user : {
+                email: email
+            }
+        });
+    }
+
+    // Password match?
+    if (!user.comparePassword(password)){ 
+        return res.render('auth/login', {
+            page: 'Login',
+            csrfToken: req.csrfToken(),
+            errors: [{ msg: 'The password is incorrect' }],
+            user : {
+                email: email
+            }
+        });
+    }
+
+    // User authentication
+
+    // User auth
+
+    const token = generateJWT(user.id);    
+    console.log( token);
+
+    // Save token in cookie
+
+    return res.cookie('_token', token, {
+        expires: new Date(Date.now() + 900000), // 15 minutes
+        httpOnly: true
+    }).redirect('/my-properties');
+
+    
 }
 
 const formRegister = (req, res) => {
@@ -223,6 +296,7 @@ const newPassword = async (req, res) => {
 
 export {
     formLogin,
+    auth,
     formRegister,
     register,
     formForgotPassword,

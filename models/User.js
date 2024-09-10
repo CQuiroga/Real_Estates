@@ -26,6 +26,19 @@ const User = db.define('users', {
     }
    });
 
+// Custom methods
+
+User.prototype.comparePassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+};
+
+/* User.prototype.generateToken = async function() {
+    const token = await bcrypt.hash(this.email, 10);
+    this.token = token;
+    await this.save();
+    return token;
+}; */
+
 export default User;
 
 

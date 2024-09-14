@@ -66,8 +66,6 @@ const auth = async (req, res) => {
         });
     }
 
-    // User authentication
-
     // User auth
 
     const token = generateJWT(user.id);    

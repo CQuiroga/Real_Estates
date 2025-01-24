@@ -39,6 +39,10 @@ app.use(express.static('public'));
 app.use('/auth', userRoutes);
 app.use('/', propertiesRoutes);
 
+app.get('/test', (req, res) => {
+    res.send('Todo ok')
+})
+
 // Port & Start project
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server running on http://localhost:${port}`));

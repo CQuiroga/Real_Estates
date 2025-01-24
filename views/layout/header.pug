@@ -1,11 +1,12 @@
 header.bg-violet-600.p-4
         .container.mx-auto.flex.justify-between.items-center
-            h1.text-2xl.text-white.font-extrabold.text-center Real
-              span.font-normal States
+            a(href="/")
+              h1.text-2xl.text-white.font-extrabold.text-center Real
+                span.font-normal States
 
             nav(class="my-5 text-sm md:flex md:items-center md:gap-3 font-bold text-white hidden")
                 a(href="") My Properties
                 a(href="") My Profile
-                a(class="py-1 px-5 rounded-md border-2 border-white" href="") LogOut
+                a(class="py-1 px-5 rounded-md border-2 border-white hover:bg-violet-900" href="/auth/login") LogOut
 
 

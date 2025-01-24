@@ -27,7 +27,6 @@ const User = db.define('users', {
    });
 
 // Custom methods
-
 User.prototype.comparePassword = function(password) {
     return bcrypt.compareSync(password, this.password);
 };
@@ -40,6 +39,3 @@ User.prototype.comparePassword = function(password) {
 }; */
 
 export default User;
-
-
-

@@ -2,7 +2,7 @@ import { check, validationResult} from 'express-validator';
 import bcrypt from 'bcrypt';
 import User from '../models/User.js';
 import { genId, generateJWT } from '../helpers/tokens.js';
-import { registerEmail, forgotPassordrEmail } from '../helpers/emails.js';
+import { registerEmail, forgotPasswordEmail } from '../helpers/emails.js';
 
 const formLogin = (req, res) => {
     res.render('auth/login', {
@@ -25,7 +25,6 @@ const auth = async (req, res) => {
             errors: result.array()
         });
     } 
-
 
     const { email, password } = req.body;
     // User exist?
@@ -67,15 +66,14 @@ const auth = async (req, res) => {
     }
 
     // User auth
-
     const token = generateJWT(user.id);    
-    console.log( token);
+    // console.log( token);
 
     // Save token in cookie
-
     return res.cookie('_token', token, {
         expires: new Date(Date.now() + 900000), // 15 minutes
-        httpOnly: true
+        httpOnly: true,
+        // secure: true
     }).redirect('/my-properties');
 
     
@@ -123,7 +121,7 @@ const register = async(req, res) => {
         return res.render('auth/register', {
             page: 'Create Account',
             csrfToken: req.csrfToken(),
-            errors: [{ msg: 'Duplicate user' }],
+            errors: [{ msg: 'User already exist' }],
             user : {
                 name: name,
                 email: email
@@ -181,8 +179,6 @@ const confirm = async (req, res) => {
                 error: false
             });
         }
-
-
 };
 
 const formForgotPassword = (req, res) => {
@@ -193,6 +189,7 @@ const formForgotPassword = (req, res) => {
 }
 
 const resetPassword = async (req, res) => {
+    
     //validations
     await check('email').isEmail().withMessage('Please enter a valid email').run(req);
     
@@ -205,6 +202,7 @@ const resetPassword = async (req, res) => {
             errors: result.array()
         });
     } 
+    
     // Find user
     const { email } = req.body;
     const errors = validationResult(req);
@@ -224,7 +222,7 @@ const resetPassword = async (req, res) => {
     user.token = genId();
     await user.save();
 
-    forgotPassordrEmail({
+    forgotPasswordEmail({
         name: user.name,
         email: user.email,
         token: user.token

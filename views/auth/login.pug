@@ -1,6 +1,6 @@
 extends ../layout/index
 
-block contenido
+block content
     .py-10
         h1.text-4xl.my-10.font-extrabold.text-center Real
             span.font-normal Estates 
@@ -16,12 +16,12 @@ block contenido
                 form.space-y-5(method="POST" action="/auth/login")
                     input(type="hidden" name="_csrf" value= csrfToken)
                     div
-                        label.block.text-sm.uppercase.text-gray-400.mb-5.font-bold(for="email") Your Email
+                        label.block.text-sm.uppercase.text-gray-500.mb-5.font-bold(for="email") Your Email
                          input#email.w-full.px-2.py-2.border.border-gray-300.mt-2.rounded-md.placeholder-gray-300(placeholder="Your Email" type="email" name="email" value= user? user.email : "")
                     input#password.w-full.px-2.py-2.border.border-gray-300.mt-2.rounded-md.placeholder-gray-300(placeholder="Your Password" type="password" name="password")
                     
                     div.flex.items-center.justify-between
-                        a.text-gray-500.text-xs.my-2(href="/auth/register") ¿You don't have an account? Create
-                        a.text-gray-500.text-xs.my-2(href="/auth/forgot-password") Forgot my Password
+                        a.text-gray-400.text-xs.my-2(href="/auth/register") ¿You don't have an account?, Create
+                        a.text-gray-400.text-xs.my-2(href="/auth/forgot-password") Forgot my Password
 
                     input(type="submit" value="Login" class="w-full bg-indigo-400 text-white hover:bg-indigo-500 py-2 cursor-pointer rounded-md mt-5")

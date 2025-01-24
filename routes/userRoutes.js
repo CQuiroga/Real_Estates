@@ -26,7 +26,4 @@ router.get('/confirm/:token', confirm);
 router.get('/forgot-password/:token', verifyToken);
 router.post('/forgot-password/:token', newPassword);
 
-
-
-
 export default router;

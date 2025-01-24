@@ -1,6 +1,6 @@
 extends ../layout/index
 
-block contenido
+block content
     .py-10
         h1.text-4xl.my-10.font-extrabold.text-center Real
             span.font-normal Estates 
@@ -16,20 +16,20 @@ block contenido
                 form.space-y-5(method="POST" action="/auth/register" noValidate)
                     input(type="hidden" name="_csrf" value=csrfToken)
                     div
-                        label.block.text-sm.uppercase.text-gray-400.font-bold(for="name") Your Name
+                        label.block.text-sm.uppercase.text-gray-500.font-bold(for="name") Your Name
                          input#name.w-full.px-2.py-2.border.text-gray-600.border-gray-300.mt-2.rounded-md.placeholder-gray-300(placeholder="Your Name" type="text" name="name" value= user? user.name : "")
                     div
-                        label.block.text-sm.uppercase.text-gray-400.font-bold(for="email") Your Email
+                        label.block.text-sm.uppercase.text-gray-500.font-bold(for="email") Your Email
                          input#email.w-full.px-2.py-2.border.text-gray-600.border-gray-300.mt-2.rounded-md.placeholder-gray-300(placeholder="Your Email" type="email" name="email" value= user? user.email : "")
                     div
-                        label.block.text-sm.uppercase.text-gray-400.font-bold(for="password") Your Password
+                        label.block.text-sm.uppercase.text-gray-500.font-bold(for="password") Your Password
                          input#password.w-full.px-2.py-2.border.text-gray-600.border-gray-300.mt-2.rounded-md.placeholder-gray-300(placeholder="Your Password" type="password" name="password")
                     div
-                        label.block.text-sm.uppercase.text-gray-400.font-bold(for="repeat_password") Repeat Password
+                        label.block.text-sm.uppercase.text-gray-500.font-bold(for="repeat_password") Repeat Password
                          input#repeat_password.w-full.px-2.py-2.border.text-gray-600.border-gray-300.mt-2.rounded-md.placeholder-gray-300(placeholder="Repeat Your Password" type="password" name="repeat_password")
                     
                     div.flex.items-center.justify-between
-                        a.text-gray-500.text-xs.my-2(href="/auth/login") ¿Do you have an Account? Login
-                        a.text-gray-500.text-xs.my-2(href="/auth/forgot-password") Forgot my Password
+                        a.text-gray-400.text-xs.my-2(href="/auth/login") ¿Do you have an Account?, Login
+                        a.text-gray-400.text-xs.my-2(href="/auth/forgot-password") Forgot my Password
 
-                    input(type="submit" value="Create a new account" class="w-full bg-indigo-500 text-white hover:bg-indigo-700 py-2 cursor-pointer rounded-md")
+                    input(type="submit" value="Create a new account" class="w-full bg-indigo-500 text-white-200 hover:bg-indigo-700 text-white py-2 cursor-pointer rounded-md")

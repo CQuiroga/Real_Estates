@@ -12,13 +12,18 @@ block content
         div(class="bg-white shadow py-8 px-4 rounded mx-auto max-w-4xl my-10 md:px-10")
             form(class ="space-y-4" action="")
                 div.space-y-5
-                    h3.text-lg-leading-6.font-medium.text-gray-500 General Information
+                    h2.text-lg-leading-6.font-medium.text-lg.text-fucsiaPalet1 General Information
                     p.text-gray-600 Add information about the property for sale
 
                     div 
-                        label.block.text-sm.uppercase.text-gray-500.mb-3-font-bold(for="title") Title Fot advertisement
+                        label.block.text-sm.uppercase.text-gray-500.mb-3-font-bold(for="title") Title For advertisement
                         input#title.w-full.px-3.py-2.border.border-gray-300.rounded-md
                         .placeholder-gray-400(placeholder="Title of property, ex. House un the beach" type="text" name="title")
+
+                    div 
+                        label.block.text-sm.uppercase.text-gray-500.mb-3-font-bold(for="description") Detailed description For you property
+                        textarea#description.w-full.px-3.py-2.border.border-gray-300.rounded-md
+                        .placeholder-gray-400(placeholder="Description of property, ex. Beautiful House un the beach, 4 rooms..." name="description")
 
                     div(class="md:flex md:gap-4 space-y-5 md:space-y-0")
                         
@@ -57,10 +62,19 @@ block content
                                 - let wc = 1;
                                     while wc < 5
                                         option(value=wc) #{wc++}
-                    #map.h-96
+                    div.border-gray-200.border-t.p-5.space-5
+                        h2.text-lg-leading-6.font-medium.text-lg.text-fucsiaPalet1 Location
+                        p.text-gray-600.mb-5 Locate the property on the map
+                        #map.h-96.p-5
+                        div.my-5
+                            p.street.text-violet-600
+                            input(type="hidden" name="street" id="street")
+                            input(type="hidden" name="lat" id="lat")
+                            input(type="hidden" name="lng" id="lng")
+
 block scripts
     script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
     script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js")
     script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/2.7.0/bundle.min.js")
-    script(src="/js/map.js") 
+    script(src="/js/map.js")

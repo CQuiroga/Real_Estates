@@ -1,10 +1,8 @@
 import { exit } from 'node:process';
 import categories from './categories.js';
 import prices from './prices.js';
-import Category from '../models/Category.js';
-import Price from '../models/Price.js';
 import db from '../config/db.js';
-import { truncate } from 'node:fs';
+import { Category, Price } from '../models/index.js'
 
 const importData = async () => {
 

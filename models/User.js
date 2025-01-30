@@ -23,6 +23,13 @@ const User = db.define('users', {
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(user.password, salt);
         }
+    },
+    scopes: {
+        deletePassword: {
+            attributes: { 
+                exclude: ['password', 'token', 'confirmed', 'createdAt', 'updatedAt'] 
+            }
+        }
     }
    });
 
@@ -30,12 +37,4 @@ const User = db.define('users', {
 User.prototype.comparePassword = function(password) {
     return bcrypt.compareSync(password, this.password);
 };
-
-/* User.prototype.generateToken = async function() {
-    const token = await bcrypt.hash(this.email, 10);
-    this.token = token;
-    await this.save();
-    return token;
-}; */
-
 export default User;

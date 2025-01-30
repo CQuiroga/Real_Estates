@@ -1,8 +1,9 @@
 import { exit } from 'node:process';
 import categories from './categories.js';
 import prices from './prices.js';
+import users from './users.js';
 import db from '../config/db.js';
-import { Category, Price } from '../models/index.js'
+import { Category, Price, User } from '../models/index.js'
 
 const importData = async () => {
 
@@ -17,7 +18,8 @@ const importData = async () => {
         // Insert data
         await Promise.all([
             Category.bulkCreate(categories),
-            Price.bulkCreate(prices)
+            Price.bulkCreate(prices),
+            User.bulkCreate(users)
         ]);
 
         console.log('Data imported succesfully');

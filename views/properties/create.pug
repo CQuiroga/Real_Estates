@@ -1,4 +1,4 @@
-extends ../layout/index
+extends ../layout/admin
 
 block styles
     link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
@@ -15,22 +15,17 @@ block content
                 p.text-purple-700.text-xs.text-center.mb-1.font-bold= error.msg
 
         div(class="bg-white shadow py-8 px-4 rounded mx-auto max-w-4xl my-10 md:px-10")
-            form(class ="space-y-4" method="POST" action="/my-properties/create")
+            form(class ="space-y-4" method="POST" action="/properties/create")
                 input(type="hidden" name="_csrf" value= csrfToken)
                 div.space-y-5
                     h2.text-lg-leading-6.font-medium.text-lg.text-fucsiaPalet1 General Information
                     p.text-gray-600 Add information about the property for sale
-
                     div 
                         label.block.text-sm.uppercase.text-gray-500.mb-3-font-bold(for="title") Title For advertisement
-                        input#title.w-full.px-3.py-2.border.border-gray-300.rounded-md
-                        .placeholder-gray-400(placeholder="Title of property, ex. House un the beach" type="text" name="title")
-
+                        input#title.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Title of property, ex. House un the beach" type="text" name="title" value= data.title ? data.title : '')
                     div 
                         label.block.text-sm.uppercase.text-gray-500.mb-3-font-bold(for="description") Detailed description For you property
-                        textarea#description.w-full.px-3.py-2.border.border-gray-300.rounded-md
-                        .placeholder-gray-400(placeholder="Description of property, ex. Beautiful House un the beach, 4 rooms..." name="description")
-
+                        textarea#description.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Description of property, ex. Beautiful House un the beach, 4 rooms..." name="description" )= data.description ? data.description : ''
                     div(class="md:flex md:gap-4 space-y-5 md:space-y-0")
                         
                         div(class="md:w-1/2")
@@ -38,12 +33,14 @@ block content
                             select#category.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(name="category")
                                 option(value="") - select -
                                 each category in categories
-                                    option(value=category.id)=category.name
+                                    option(value=category.id selected= data.category ? data.category == category.id ? true : false : null )= category.name
                         
                         div(class="md:w-1/2")
                             label.block.text-sm.uppercase.text-gray-500.mb-3-font-bold(for="price") Price
                             select#price.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(name="price")
                                 option(value="") - select -
+                                each price in prices
+                                    option(value=price.id selected= data.price ? data.price == price.id ? true : false : null )= price.name
 
                     div(class="md:flex md:gap-4 space-y-5 md:space-y-0")
                         
@@ -52,8 +49,8 @@ block content
                             select#rooms.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(name="rooms")
                                 option(value="") - select -
                                 - let room = 1;
-                                    while room < 10
-                                        option(value=room) #{room++}
+                                    while room < 9
+                                        option(value=room selected= data.rooms ? data.rooms == room ? true : false : null ) #{room++}
                                        
                         div(class="md:w-1/3")
                             label.block.text-sm.uppercase.text-gray-500.mb-3-font-bold(for="parking") Parking Lots
@@ -61,7 +58,7 @@ block content
                                 option(value="") - select -
                                 - let parking = 1;
                                     while parking < 6
-                                        option(value=parking) #{parking++}
+                                        option(value=parking selected= data.parking ? data.parking == parking ? true : false : null) #{parking++}
 
                         div(class="md:w-1/3")
                             label.block.text-sm.uppercase.text-gray-500.mb-3-font-bold(for="wc") WC
@@ -69,16 +66,16 @@ block content
                                 option(value="") - select -
                                 - let wc = 1;
                                     while wc < 5
-                                        option(value=wc) #{wc++}
+                                        option(value=wc selected= data.wc ? data.wc == wc ? true : false : null) #{wc++}
                     div.border-gray-200.border-t.p-5.space-5
                         h2.text-lg-leading-6.font-medium.text-lg.text-fucsiaPalet1 Location
                         p.text-gray-600.mb-5 Locate the property on the map
                         #map.h-96.p-5
                         div.my-5
-                            p.street.text-violet-600
-                            input(type="hidden" name="street" id="street")
-                            input(type="hidden" name="lat" id="lat")
-                            input(type="hidden" name="lng" id="lng")
+                            p.street.text-violet-600= data.street ? data.street : ''
+                            input(type="hidden" name="street" id="street" value= data.street ? data.street : '')
+                            input(type="hidden" name="lat" id="lat" value= data.lat ? data.lat : '')
+                            input(type="hidden" name="lng" id="lng" value= data.lng ? data.lng : '')
                     input(type="submit" value="Upload Image" class="w-full bg-indigo-400 text-white hover:bg-indigo-500 py-2 cursor-pointer rounded-md mt-5")
 
 block scripts

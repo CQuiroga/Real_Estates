@@ -7,7 +7,6 @@ Property.belongsTo(Price, { foreignKey: 'price_id'});
 Property.belongsTo(Category, { foreignKey: 'category_id'});
 Property.belongsTo(User, { foreignKey: 'user_id'});
 
-
 export {
     Property,
     Price,

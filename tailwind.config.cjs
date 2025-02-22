@@ -8,8 +8,8 @@ module.exports = {
         fucsiaPalet2: '#7555AD',
         fucsiaPalet3: '#EDE539',
         fucsiaPalet4: '#5C516E'
+      },
     },
-  },
-  plugins: [],
+  plugins: []
+  }
 }
-

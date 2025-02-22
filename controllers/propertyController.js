@@ -79,14 +79,71 @@ const save = async(req, res) => {
 }
 
 const addImage = async ( req, res) => {
+
+    const { id } = req.params;
+
+    // Property Exist?
+    const property = await Property.findByPk(id);
+
+    if (!property) {
+        return res.redirect('/my-properties');
+    }
+
+    // Property is published?
+    if (property.published) {
+        return res.redirect('/my-properties');
+    }
+
+    // Does the property belong to the user who posts it?
+    /* if ( req.user.id.toString() !== property.userId.toString() ) {
+        return res.redirect('/my-properties');
+    } */
+
     res.render('properties/add-image', {
-        page: 'Add Images'
+        page: `Add Images for `,
+        title: property.title,
+        csrfToken: req.csrfToken(),
+        property
     });
+}
+
+const storageImage = async (req, res, next) => {
+    
+    const { id } = req.params;
+
+    // Property Exist?
+    const property = await Property.findByPk(id);
+    if (!property) {
+        return res.redirect('/my-properties');
+    }
+
+    // Property is published?
+    if (property.published) {
+        return res.redirect('/my-properties');
+    }
+
+    // Does the property belong to the user who posts it?
+    /* if ( req.user.id.toString() !== property.userId.toString() ) {
+        return res.redirect('/my-properties');
+    } */
+
+    try {
+
+        // Storage image & publish property
+        property.image = req.file.filename;
+        property.published = true;
+        await property.save();
+        next();
+
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 export {
     admin,
     create,
     save,
-    addImage
+    addImage,
+    storageImage
 }

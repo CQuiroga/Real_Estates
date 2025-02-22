@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title :: Real States | #{page} ::
+        block styles
+        link(rel="stylesheet", href="/css/app.css")
+    body.min-h-screen.bg-gray-50
+        include includes/header-admin
+
+        main.mx-auto.container.mt-10.px-2
+            block content
+
+        block scripts

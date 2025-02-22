@@ -1,0 +1,51 @@
+{
+  "name": "real_states",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "css": "postcss public/css/tailwind.css -o public/css/app.css --watch",
+    "js": "webpack --watch",
+    "dev": "concurrently \"npm run css\" \"npm run js\" \"npm run start\"",
+    "db:import": "node ./seed/seeder.js -i",
+    "db:delete": "node ./seed/seeder.js -d"
+  },
+  "keywords": [
+    "MVC",
+    "Real States",
+    "PUG",
+    "Tailwind",
+    "Express",
+    "MySQL"
+  ],
+  "author": "Camilo Quiroga",
+  "license": "ISC",
+  "description": "camilo.quirogam@gmail.com",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "csurf": "^1.11.0",
+    "dotenv": "^16.4.5",
+    "dropzone": "^5.9.3",
+    "express": "^4.19.2",
+    "express-validator": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.11.0",
+    "nodemailer": "^6.9.14",
+    "pug": "^3.0.3",
+    "sequelize": "^6.37.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.0.1",
+    "nodemon": "^3.1.4",
+    "postcss": "^8.4.41",
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "^3.4.10",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4"
+  }
+}

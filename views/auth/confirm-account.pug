@@ -1,0 +1,11 @@
+extends ../layout/index
+
+block content
+    .py-10
+        h1.text-4xl.my-10.font-extrabold.text-center Real
+            span.font-normal Estates 
+        h2.text-center.text-purple-700.font-bold.text-2xl= page 
+    div( class="bg-white shadow py-8 px-4 rounded-lg max-w-md mx-auto")
+        p( class= error ? ' text-red-500 text-center text-xl' : 'text-green-500 text-center text-xl').py-2.px-5.rounded-lg.w-full.mb-2= message
+        button(class="w-full bg-indigo-500 text-white hover:bg-indigo-700 py-2 cursor-pointer rounded-md")
+            a(href="/auth/login", target="_self", rel="noopener noreferrer") Login

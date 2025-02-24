@@ -3,9 +3,9 @@ import Price from './Price.js';
 import Category from './Category.js';
 import User from './User.js';
 
-Property.belongsTo(Price, { foreignKey: 'price_id'});
-Property.belongsTo(Category, { foreignKey: 'category_id'});
-Property.belongsTo(User, { foreignKey: 'user_id'});
+Property.belongsTo(Price, { foreignKey: 'priceId'});
+Property.belongsTo(Category, { foreignKey: 'categoryId'});
+Property.belongsTo(User, { foreignKey: 'userId'});
 
 export {
     Property,

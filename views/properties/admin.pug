@@ -2,8 +2,43 @@ extends ../layout/admin
 
 block content
     .py-10
-        h1.text-4xl.my-10.font-extrabold.text-center Real
+        h1.text-4xl.my-10.font-extrabold.text-center.text-gray-500 Real
             span.font-normal Estates 
         h2.text-center.text-purple-700.font-bold.text-2xl= page
 
         a(href="/properties/create" class="rounded py-2 px-2 bg-indigo-600 hover:bg-indigo-700 text-sm font-bold text-center text-white uppercase my-5 inline-block w-full sm:w-auto") Publish Property
+
+        //- pre= JSON.stringify(properties, undefined, 2 )
+
+        if properties.length
+            div(class="bg-white shadow rounded-lg")
+                ul(class="divide-y divide-gray-200")
+                    each property in properties
+                        li
+                            div(class="p-6 w-full flex flex-col sm:flex-row sm:items-center sm:justify-between lg:flex-row lg:items-center lg:justify-between space-y-8 md:space-y-0 gap-4")
+                                
+                                div(class="sm:w-1/4 md:w-1/6 lg:w-1/6") 
+                                    img(src=`uploads/${property.image}`, alt=`${property.title}` class="w-full block")
+                                
+                                div(class="sm:w-2/4 md:w-3/6 lg:w-4/6 space-y-3") 
+                                    a(class="block text-2xl font-extralight truncate" href="")
+                                        h3(class="text-2xl font-bold line-clamp-2 text-purple-700")=property.title
+                                    p(class="text-xl font-bold line-clamp text-indigo-400")=property.category.name
+                                    p(class="text-gray-400 flex items-center")
+                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5")
+                                            path(d="M10.75 10.818v2.614A3.13 3.13 0 0 0 11.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 0 0-1.138-.432ZM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 0 0-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152Z")
+                                            path(fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-6a.75.75 0 0 1 .75.75v.316a3.78 3.78 0 0 1 1.653.713c.426.33.744.74.925 1.2a.75.75 0 0 1-1.395.55 1.35 1.35 0 0 0-.447-.563 2.187 2.187 0 0 0-.736-.363V9.3c.698.093 1.383.32 1.959.696.787.514 1.29 1.27 1.29 2.13 0 .86-.504 1.616-1.29 2.13-.576.377-1.261.603-1.96.696v.299a.75.75 0 1 1-1.5 0v-.3c-.697-.092-1.382-.318-1.958-.695-.482-.315-.857-.717-1.078-1.188a.75.75 0 1 1 1.359-.636c.08.173.245.376.54.569.313.205.706.353 1.138.432v-2.748a3.782 3.782 0 0 1-1.653-.713C6.9 9.433 6.5 8.681 6.5 7.875c0-.805.4-1.558 1.097-2.096a3.78 3.78 0 0 1 1.653-.713V4.75A.75.75 0 0 1 10 4Z" clip-rule="evenodd")
+                                        =property.price.name
+                                
+                                div(class="sm:w-1/4 md:w-2/6 lg:flex-1 flex flex-col lg:flex-row gap-2")
+                                    form(action="#")
+                                        input(type="submit", class=`w-full px-2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer text-center ${property.published ? 'bg-green-200 text-green-800' : 'bg-yellow-300 text-yellow-800'}` value=`${property.published ? 'Published' : 'Not Published'}`)
+                                    
+                                    a(href="#" class='w-full px2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer bg-purple-300 text-purple-700 text-center') Edit
+                                    
+                                    form(action="#")
+                                        input(type="submit", class="w-full px-2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer bg-red-300 text-red-700 text-center" value="Delete")
+
+
+        else
+            p.text-gray-600.font-semibold.py-4.px-6.text-xl.text-center You don't have a properties published

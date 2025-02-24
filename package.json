@@ -8,7 +8,7 @@
     "server": "nodemon index.js",
     "css": "postcss public/css/tailwind.css -o public/css/app.css --watch",
     "js": "webpack --watch",
-    "dev": "concurrently \"npm run css\" \"npm run js\" \"npm run start\"",
+    "dev": "concurrently \"npm run css\" \"npm run js\" \"npm run server\"",
     "db:import": "node ./seed/seeder.js -i",
     "db:delete": "node ./seed/seeder.js -d"
   },

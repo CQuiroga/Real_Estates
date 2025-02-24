@@ -1,3 +1,4 @@
+import { unlink } from 'node:fs/promises'
 import { validationResult } from 'express-validator';
 import { Category, Price, Property, User } from '../models/index.js';
 
@@ -15,10 +16,10 @@ const admin = async(req, res) => {
 
     })
     
-
     res.render('properties/admin', {
         page: 'My properties',
-        properties
+        properties,
+        csrfToken: req.csrfToken()
     });
 }
 
@@ -114,7 +115,7 @@ const addImage = async ( req, res) => {
     } */
 
     res.render('properties/add-image', {
-        page: `Add Images for `,
+        page: 'Add Images for ',
         title: property.title,
         csrfToken: req.csrfToken(),
         property
@@ -154,10 +155,137 @@ const storageImage = async (req, res, next) => {
     }
 }
 
+const edit = async (req, res) => {
+
+    const { id } = req.params;
+    
+    // Property Exist?
+    const property = await Property.findByPk(id);
+
+    if (!property) {
+        return res.redirect('/my-properties');
+    }
+    
+    // Is property user author?
+    if ( property.userId.toString()!== req.user.id.toString() ) {
+        return res.redirect('/my-properties');
+    }
+
+    // Find Price & Category
+    const [ categories, prices ] = await Promise.all([
+        Category.findAll(),
+        Price.findAll()
+    ]);
+
+    res.render('properties/edit', {
+        page: 'Edit property: ',
+        title: property.title,
+        csrfToken: req.csrfToken(),
+        categories,
+        prices,
+        data: property
+    });
+}
+
+const saveEdit = async (req, res) => {
+    
+    // Validations
+    let result = validationResult(req);
+
+    if (!result.isEmpty()) {
+        const [ categories, prices ] = await Promise.all([
+            Category.findAll(),
+            Price.findAll()
+        ]);
+
+        return res.render('properties/edit', {
+            page: 'Edit property',
+            csrfToken: req.csrfToken(),
+            categories,
+            prices,
+            errors: result.array(),
+            data: req.body
+        });
+    } 
+
+    const { id } = req.params;
+    
+    // Property Exist?
+    const property = await Property.findByPk(id);
+
+    if (!property) {
+        return res.redirect('/my-properties');
+    }
+    
+    // Is property user author?
+    if ( property.userId.toString()!== req.user.id.toString() ) {
+        return res.redirect('/my-properties');
+    }
+
+    // Update property
+
+    try {
+        const { title, description, rooms, parking, wc, street, lat, lng, price: priceId, category: categoryId} = req.body;
+        property.set({
+            title,
+            description,
+            rooms,
+            parking,
+            wc,
+            street,
+            lat,
+            lng,
+            priceId,
+            categoryId
+        });
+
+        await property.save();
+        res.redirect('/my-properties');
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+
+}
+
+const deleteProperty = async (req, res) => {
+    
+    const { id } = req.params;
+
+    // Property Exist?
+    const property = await Property.findByPk(id);
+
+    if (!property) {
+        return res.redirect('/my-properties');
+    }
+    
+    // Is property user author?
+    if ( property.userId.toString()!== req.user.id.toString() ) {
+        return res.redirect('/my-properties');
+    }
+    
+    // Delete image file
+    await unlink(`public/uploads/${property.image}`);
+    
+    // Delete property
+    try {
+        await property.destroy();
+        res.redirect('/my-properties');
+    }
+    catch (error) {
+        console.error(error);
+    }
+
+}
+
 export {
     admin,
     create,
     save,
     addImage,
-    storageImage
+    storageImage,
+    edit,
+    saveEdit,
+    deleteProperty
 }

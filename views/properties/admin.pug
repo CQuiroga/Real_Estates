@@ -34,9 +34,10 @@ block content
                                     form(action="#")
                                         input(type="submit", class=`w-full px-2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer text-center ${property.published ? 'bg-green-200 text-green-800' : 'bg-yellow-300 text-yellow-800'}` value=`${property.published ? 'Published' : 'Not Published'}`)
                                     
-                                    a(href="#" class='w-full px2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer bg-purple-300 text-purple-700 text-center') Edit
+                                    a(href=`/properties/edit/${property.id}` class='w-full px2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer bg-purple-300 text-purple-700 text-center') Edit
                                     
-                                    form(action="#")
+                                    form(method="POST" action=`/properties/delete/${property.id}`)
+                                        input(type="hidden" name="_csrf" value= csrfToken)
                                         input(type="submit", class="w-full px-2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer bg-red-300 text-red-700 text-center" value="Delete")
 
 

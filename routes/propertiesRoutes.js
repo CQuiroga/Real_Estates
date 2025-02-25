@@ -1,6 +1,14 @@
 import express from 'express';
 import { body } from 'express-validator';
-import { admin, create, save, addImage, storageImage, edit, saveEdit, deleteProperty } from '../controllers/propertyController.js';
+import { admin, 
+    create, 
+    save, 
+    addImage, 
+    storageImage, 
+    edit, 
+    saveEdit, 
+    deleteProperty,
+    showProperty } from '../controllers/propertyController.js';
 import protectRoute from '../middleware/protectRoute.js';
 import upload from '../middleware/uploadImages.js';
 
@@ -53,5 +61,10 @@ router.post('/properties/delete/:id',
     protectRoute,
     deleteProperty
 );
+
+// Public zone
+
+router.get('/property/:id', showProperty);
+
 
 export default router;

@@ -279,6 +279,31 @@ const deleteProperty = async (req, res) => {
 
 }
 
+// Show one property
+
+const showProperty = async (req, res) => {
+
+    const { id } = req.params;
+
+    // Property Exist?
+    const property = await Property.findByPk(id, {
+        include: [
+            { model: Category, as: 'category'},
+            { model: Price, as: 'price'}
+        ]
+    });
+
+    if (!property) {
+        return res.redirect('/properties');
+    }
+
+    res.render('properties/show', {
+        page: property.title,
+        property,
+        csrfToken: req.csrfToken()
+    });
+}
+
 export {
     admin,
     create,
@@ -287,5 +312,6 @@ export {
     storageImage,
     edit,
     saveEdit,
-    deleteProperty
+    deleteProperty,
+    showProperty
 }

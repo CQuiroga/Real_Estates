@@ -16,7 +16,7 @@
   \***************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n(function() {\r\n    const lat = document.querySelector('#lat').textContent;\r\n    const lng = document.querySelector('#lng').textContent;\r\n    const street = document.querySelector('#street').textContent;\r\n    const title = document.querySelector('#title').textContent;\r\n\r\n    const map = L.map('map').setView([lat, lng], 15);\r\n\r\n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\r\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\r\n    }).addTo(map);\r\n\r\n    // Add PIN\r\n    L.marker([lat, lng]).addTo(map)\r\n    .bindPopup(`${title} \r\n        ${street}`);\r\n\r\n})()\n\n//# sourceURL=webpack://real_states/./src/js/showMap.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n(function() {\r\n    const lat = document.querySelector('#lat').textContent;\r\n    const lng = document.querySelector('#lng').textContent;\r\n    const street = document.querySelector('#street').textContent;\r\n    const title = document.querySelector('#title').textContent;\r\n\r\n    const map = L.map('map').setView([lat, lng], 15);\r\n\r\n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\r\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\r\n    }).addTo(map);\r\n\r\n    // Add PIN\r\n    L.marker([lat, lng]).addTo(map)\r\n    .bindPopup(`${title} - ${street}`);\r\n\r\n})()\n\n//# sourceURL=webpack://real_states/./src/js/showMap.js?");
 
 /***/ })
 

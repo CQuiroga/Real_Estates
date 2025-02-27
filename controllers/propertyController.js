@@ -4,23 +4,51 @@ import { Category, Price, Property, User } from '../models/index.js';
 
 
 const admin = async(req, res) => {
-    
-    const { id } = req.user;
 
-    const properties = await Property.findAll( {
-        where: { userId: id },
-        include: [
-            { model: Category, as: 'category'},
-            { model: Price, as: 'price'}
-        ]
+    // Read Query String
 
-    })
+    const { page:actualPage } = req.query;
+    const expresion = /^[1-9]$/;
+    if (!expresion.test(actualPage)) {
+        return res.redirect('/my-properties?page=1');
+    }
+
+    try {
+        const { id } = req.user;
+
+        // Limits & offsets
+        const limit = 10;
+        const offset = (actualPage - 1) * limit;
+
+        const [properties, total] = await Promise.all([
+            Property.findAll( {
+                limit,
+                offset,
+                where: { userId: id },
+                include: [
+                    { model: Category, as: 'category'},
+                    { model: Price, as: 'price'}
+                ],               
+            }),
+            Property.count({
+                where: { userId: id }
+            })
+        ]);
+        res.render('properties/admin', {
+            page: 'My properties',
+            properties,
+            csrfToken: req.csrfToken(),
+            pages: Math.ceil(total/limit),
+            actualPage: Number(actualPage),
+            total,
+            offset,
+            limit
+        });
+    } catch (error) {
+        console.log(error);
+    }
+
     
-    res.render('properties/admin', {
-        page: 'My properties',
-        properties,
-        csrfToken: req.csrfToken()
-    });
 }
 
 // Create property form
@@ -276,7 +304,6 @@ const deleteProperty = async (req, res) => {
     catch (error) {
         console.error(error);
     }
-
 }
 
 // Show one property

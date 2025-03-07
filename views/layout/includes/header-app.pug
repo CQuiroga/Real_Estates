@@ -5,8 +5,22 @@ header.bg-violet-600.p-4
                 span.font-normal States
 
             nav(class="my-5 text-sm md:flex md:items-center md:gap-3 font-bold text-white hidden")
-                a(href="/my-properties") My Properties
-                a(href="") My Profile
-                a(class="py-1 px-5 rounded-md border-2 border-white hover:bg-violet-900" href="/auth/login") LogOut
+                a(href="/auth/resgister") Create Account
+                a(class="py-1 px-5 rounded-md border-2 border-white hover:bg-violet-900" href="/auth/login") Login
 
 
+div(class="bg-violet-700 py-5 hidden lg:block")
+    div(class="container mx-auto flex justify-between")
+        nav(class="flex gap-4 items-center")
+            a(href="/categories/1" class="text-sm font-bold uppercase text-white") Houses 
+            a(href="/categories/2" class="text-sm font-bold uppercase text-white") Apartments 
+            a(href="/categories/3" class="text-sm font-bold uppercase text-white") Commercial Premises 
+            a(href="/categories/4" class="text-sm font-bold uppercase text-white") Stores 
+            a(href="/categories/5" class="text-sm font-bold uppercase text-white") Batchs 
+
+        form(action="/search" method="POST" class="flex gap-3 items-center")
+            input(type="hidden" name="_csrf" value= csrfToken)
+            label(for="word" class="text-sm uppercase font-bold text-white") Find Properties
+            input(type="text" id="word" name="word" placeholder="Enter the property of your interest" class="p-2 rounded-lg shadow text-sm")
+
+            input(type="submit" class="bg-violet-800 hover:bg-violet-400 rounded-lg text-white uppercase font-bold p-2 cursor-pointer text-sm" value="Search") 

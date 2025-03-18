@@ -2,17 +2,40 @@
     const lat = 4.7574479;
     const lng = -74.1122502;
     const map = L.map('home-map').setView([lat, lng], 2);
-    const markers = new L.FeatureGroup().addTo(map)
+    const markers = new L.FeatureGroup().addTo(map);
+
+    let properties = [];
+
+    // Filters
+    const filters = {
+        category: '', 
+        price: ''
+    }
+    
+
+    const categoriesSelect = document.querySelector('#categories');
+    const pricesSelect = document.querySelector('#prices');
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+    // Filters by category and price
+    categoriesSelect.addEventListener('change', e => {
+        filters.category = +e.target.value;
+        filterProperties();
+    });
+
+    pricesSelect.addEventListener('change', e => {
+        filters.price = +e.target.value;
+        filterProperties();
+    });
+
     const getProperties = async () => {
         try {
             const url = '/api/properties'
             const response = await fetch(url);
-            const properties = await response.json();
+            properties = await response.json();
             showProperties(properties);
 
         } catch (error) {
@@ -21,6 +44,9 @@
     }
 
     const showProperties = properties => {
+        // Clear previous markers
+        markers.clearLayers();
+
         properties.forEach(property => {
             //Add Pines
             const marker = new L.marker([property?.lat, property?.lng], {
@@ -35,6 +61,16 @@
             markers.addLayer(marker)
         })
     }
+
+    const filterProperties = () => {
+        const result = properties.filter( filterCategory ).filter( filterPrices );
+        showProperties(result);
+
+    }
+
+    const filterCategory = property => filters.category ? property.categoryId === filters.category : property;
+
+    const filterPrices = property => filters.price ? property.priceId === filters.price : property
 
     getProperties();
 })()

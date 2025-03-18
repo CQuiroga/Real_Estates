@@ -8,7 +8,7 @@ block content
     div(class="py-5 ")
         h1(class="text-center text-4xl font-extrabold text-gray-500") Location on the Map
 
-        div(class="flex flex-col md:flex-row items-center py-10 gap-4")
+        div(class="flex flex-col md:flex-row items-center py-10 gap-4")  
             h2(class="text-sm uppercase text-gray-800 font-bold") Filter Properties:
 
             div(class="w-full md:w-auto flex items-center gap-2")
@@ -28,18 +28,19 @@ block content
         div(id="home-map" class="h-[600px] mt-5")
 
         section(class="py-5")
-            h2(class="text-center text-4xl font-extrabold pt-10") Houses for Sale
+            h2(class="text-center text-4xl font-extrabold pt-2 text-gray-500") Houses for Sale
+            hr
 
             div(class="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-14")
                 each property in houses
-                    //- include ./templates/card
+                    include ./templates/card
 
         section(class="py-5")
-            h2(class="text-center text-4xl font-extrabold pt-10") Apartments for Sale
+            h2(class="text-center text-4xl font-extrabold pt-2 text-gray-500") Apartments for Sale
 
             div(class="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-14")
                 each property in apartments
-                    //- include ./templates/card
+                    include ./templates/card
 
 block scripts
     script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")

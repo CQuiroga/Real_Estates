@@ -52,7 +52,7 @@ block content
                     if !isSeller
 
                         h3(class="text-2xl text-center my-10 font-bold text-fucsiaPalet1") Seller
-                        if enviado
+                        if send
                             p(class="p-2 text-center bg-green-100 text-green-600 uppercase font-bold") Message Send Successfully
 
                         else if user
@@ -69,12 +69,12 @@ block content
                                     label(for="message") Message
                                     textarea(id="message" name="message" class="w-full px-2 py-2 border border-gray-300 rounded-lg shadow placeholder-gray-400" placeholder="Fill your message here" )
 
-                                    input(type="submit" value="Send message" class="bg-indigo-600 text-white font-bold uppercase text-sm w-full p-2 cursor-pointer")
+                                    input(type="submit" value="Send message" class="bg-violet-600 text-white font-bold uppercase text-sm w-full p-2 cursor-pointer rounded-md")
 
                         else 
                             div(class="flex flex-col items-center justify-center gap-2")
                                 p(class="text-center text-gray-400") If you want to contact the seller, you must log in or
-                                a(class="text-indigo-600" href="/auth/registro") create an account
+                                a(class="text-violet-600" href="/auth/registro") create an account
 
 
 block scripts

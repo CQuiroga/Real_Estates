@@ -8,9 +8,11 @@ import { admin,
     edit, 
     saveEdit, 
     deleteProperty,
-    showProperty } from '../controllers/propertyController.js';
+    showProperty,
+    sendMessage, seeMessages } from '../controllers/propertyController.js';
 import protectRoute from '../middleware/protectRoute.js';
 import upload from '../middleware/uploadImages.js';
+import identifyUser from '../middleware/identifyUser.js';
 
 const router = express.Router();
 
@@ -64,7 +66,19 @@ router.post('/properties/delete/:id',
 
 // Public zone
 
-router.get('/property/:id', showProperty);
+router.get('/property/:id', identifyUser, showProperty);
+
+// Storage messages
+router.post('/property/:id',
+    identifyUser,
+    body('message').isLength({min: 20}).withMessage('The message cannot be empty or is too short.'),
+    sendMessage
+)
+
+router.get('/messages/:id', 
+    protectRoute,
+    seeMessages
+)
 
 
 export default router;

@@ -1,7 +1,7 @@
 import { unlink } from 'node:fs/promises'
 import { validationResult } from 'express-validator';
-import { Category, Price, Property, User } from '../models/index.js';
-
+import { Category, Price, Property, User, Message } from '../models/index.js';
+import { isSeller } from '../helpers/index.js'; 
 
 const admin = async(req, res) => {
 
@@ -315,20 +315,111 @@ const showProperty = async (req, res) => {
     // Property Exist?
     const property = await Property.findByPk(id, {
         include: [
-            { model: Category, as: 'category'},
+            { model: Category, as: 'category', scope: 'deletePassword'},
             { model: Price, as: 'price'}
         ]
     });
 
-    if (!property) {
+    if ( !property || !property.published ) {
         return res.redirect('/properties');
     }
 
     res.render('properties/show', {
         page: property.title,
         property,
-        csrfToken: req.csrfToken()
+        csrfToken: req.csrfToken(),
+        user: req.user,
+        isSeller: isSeller(req.user?.id, property.userId )
     });
+}
+
+const sendMessage = async (req, res) => {
+    const {id} = req.params
+
+    // Property Exist?
+    const property = await Property.findByPk(id, {
+        include : [
+            { model: Price, as: 'price' },
+            { model: Category, as: 'category' },
+        ]
+    })
+
+    if(!property) {
+        return res.redirect('/404')
+    }
+
+    // Render errors
+    // Validation
+    let result = validationResult(req);
+
+    if(!result.isEmpty()) {
+        return res.render('properties/show', {
+            page: property.title,
+            property,
+            csrfToken: req.csrfToken(),
+            user: req.user,
+            isSeller: isSeller(req.user?.id, property.userId ),
+            errors: result.array()
+        });
+    }
+
+    const { message } = req.body;
+    const { id: propertyId } = req.params;
+    const { id: userId } = req.user;
+
+    // Almacenar el mensaje
+    await Message.create({
+        message,
+        propertyId,
+        userId
+    });
+
+    /* res.render('properties/show', {
+        page: property.title,
+        property,
+        csrfToken: req.csrfToken(),
+        user: req.user,
+        isSeller: isSeller(req.user?.id, property.userId ),
+        send: true
+    }); */
+
+
+    res.redirect('/');
+}
+
+// Read inbox messages
+
+const seeMessages = async (req, res) => {
+
+    res.send('Read inbox messages');
+
+    /* const {id} = req.params
+
+    // Validar que la propiedad exista
+    const propiedad = await Propiedad.findByPk(id, {
+        include: [
+            { model: Mensaje, as: 'mensajes', 
+                include: [
+                    {model: Usuario.scope('eliminarPassword'), as: 'usuario'}
+                ]
+            },
+        ],
+    })
+
+    if(!propiedad) {
+        return res.redirect('/mis-propiedades')
+    }
+
+    // Revisar que quien visita la URl, es quien creo la propiedad
+    if(propiedad.usuarioId.toString() !== req.usuario.id.toString() ) {
+        return res.redirect('/mis-propiedades')
+    }
+
+    res.render('propiedades/mensajes', {
+        pagina: 'Mensajes',
+        mensajes: propiedad.mensajes,
+        formatearFecha
+    }) */
 }
 
 export {
@@ -340,5 +431,7 @@ export {
     edit,
     saveEdit,
     deleteProperty,
-    showProperty
+    showProperty,
+    sendMessage,
+    seeMessages
 }

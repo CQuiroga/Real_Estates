@@ -48,16 +48,75 @@ const home = async (req, res) => {
     });
 };
 
-const category = (req, res) => {
+const category = async (req, res) => {
+
+    const { id } = req.params;
+
+    // Category exists?
+
+    const category = await Category.findByPk(id);
+
+    if (!category) {
+        return res.redirect('/404');
+    }
+
+    // Get properties by category
+    const properties = await Property.findAll({
+        where: {
+            categoryId: id
+        },
+        include: [
+            {
+                model: Price,
+                as: 'price',
+            }
+        ],
+        order: [
+            ['createdAt', 'DESC']
+        ]
+    });
+
+    res.render('category', {
+        page: category.name,
+        properties,
+        csrfToken: req.csrfToken()
+    });
+
 
 };
 
 const notFound = (req, res) => {
-
+    res.render('404', {
+        page: 'Not Found',
+        csrfToken: req.csrfToken()
+    })
 };
 
-const search = (req, res) => {
+const search = async (req, res) => {
+    const { word } = req.body
 
+    // Word is null?
+    if(!word.trim()) {
+        return res.redirect('back')
+    }
+
+    // Search properties
+    const properties = await Property.findAll({
+        where: {
+            title: {
+                [Sequelize.Op.like] : '%' + word + '%'
+            }
+        },
+        include: [
+            { model: Price, as: 'price'}
+        ]
+    })
+
+    res.render('search', {
+        page: 'Search Results',
+        properties, 
+        csrfToken: req.csrfToken()
+    })
 };
 
 export { home, category, notFound, search }

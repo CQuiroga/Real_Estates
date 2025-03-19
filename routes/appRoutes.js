@@ -17,6 +17,6 @@ router.get('/404', notFound);
 
 // Search page
 
-router.get('/search', search);
+router.post('/search', search);
 
 export default router;

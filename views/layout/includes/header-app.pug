@@ -5,7 +5,7 @@ header.bg-violet-600.p-4
                 span.font-normal States
 
             nav(class="my-5 text-sm md:flex md:items-center md:gap-3 font-bold text-white hidden")
-                a(href="/auth/resgister") Create Account
+                a(href="/auth/register") Create Account
                 a(class="py-1 px-5 rounded-md border-2 border-white hover:bg-violet-900" href="/auth/login") Login
 
 
@@ -16,7 +16,7 @@ div(class="bg-violet-700 py-5 hidden lg:block")
             a(href="/categories/2" class="text-sm font-bold uppercase text-white") Apartments 
             a(href="/categories/3" class="text-sm font-bold uppercase text-white") Commercial Premises 
             a(href="/categories/4" class="text-sm font-bold uppercase text-white") Stores 
-            a(href="/categories/5" class="text-sm font-bold uppercase text-white") Batchs 
+            a(href="/categories/5" class="text-sm font-bold uppercase text-white") Batches
 
         form(action="/search" method="POST" class="flex gap-3 items-center")
             input(type="hidden" name="_csrf" value= csrfToken)

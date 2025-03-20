@@ -11,7 +11,7 @@
     "cssprod": "postcss public/css/tailwind.css -o public/css/app.css",
     "jsprod": "webpack",
     "dev": "concurrently \"npm run css\" \"npm run js\" \"npm run server\"",
-    "prod": "concurrently \"npm run cssprod\" \"npm run jsprod\" \"npm run start\"",
+    "prod": "npm run start",
     "db:import": "node ./seed/seeder.js -i",
     "db:delete": "node ./seed/seeder.js -d"
   },

@@ -3,9 +3,9 @@ div(class="bg-white shadow rounded-lg")
     div(class="p-4 space-y-3")
         h3(class="text-xl font-bold text-violet-600")= property.title
         p(class="text-sm text-gray-400") Rooms: 
-            span(class="text-gray-500 font-bold")= property.rooms
+            span(class="text-gray-500 font-medium")= property.rooms
         p(class="text-sm text-gray-400") WC: 
-            span(class="text-gray-500 font-bold")= property.wc
+            span(class="text-gray-500 font-medium")= property.wc
         p(class="text-sm text-gray-400") Price:  
-            span(class="text-fucsiaPalet1 font-bold")= property.price.name
-        a(href=`/property/${property.id}` class="bg-violet-600 w-full text-center block font-bold text-white p-2 uppercase rounded") See property 
+            span(class="text-fucsiaPalet1 font-medium")= property.price.name
+        a(href=`/property/${property.id}` class="bg-violet-600 w-full text-center block font-medium text-white p-2 uppercase rounded") See property 

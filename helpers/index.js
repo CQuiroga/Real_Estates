@@ -9,10 +9,14 @@ const formatDate = date => {
         weekday: 'long',
         year: 'numeric',
         month: 'long', 
-        day: 'numeric'
+        day: 'numeric',
+        timeZone: 'America/Bogota',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
     }
 
-    return new Date(newDate).toLocaleDateString('es-ES', options)
+    return new Date(newDate).toLocaleDateString('en-EN', options)
     
 }
 

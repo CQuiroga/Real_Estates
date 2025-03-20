@@ -1,7 +1,7 @@
 import { unlink } from 'node:fs/promises'
 import { validationResult } from 'express-validator';
 import { Category, Price, Property, User, Message } from '../models/index.js';
-import { isSeller } from '../helpers/index.js'; 
+import { isSeller, formatDate } from '../helpers/index.js'; 
 
 const admin = async(req, res) => {
 
@@ -27,7 +27,8 @@ const admin = async(req, res) => {
                 where: { userId: id },
                 include: [
                     { model: Category, as: 'category'},
-                    { model: Price, as: 'price'}
+                    { model: Price, as: 'price'},
+                    { model: Message, as: 'messages'}
                 ],               
             }),
             Property.count({
@@ -138,9 +139,9 @@ const addImage = async ( req, res) => {
     }
 
     // Does the property belong to the user who posts it?
-    /* if ( req.user.id.toString() !== property.userId.toString() ) {
+    if ( req.user.id.toString() !== property.userId.toString() ) {
         return res.redirect('/my-properties');
-    } */
+    }
 
     res.render('properties/add-image', {
         page: 'Add Images for ',
@@ -166,9 +167,9 @@ const storageImage = async (req, res, next) => {
     }
 
     // Does the property belong to the user who posts it?
-    /* if ( req.user.id.toString() !== property.userId.toString() ) {
+    if ( req.user.id.toString() !== property.userId.toString() ) {
         return res.redirect('/my-properties');
-    } */
+    }
 
     try {
 
@@ -306,6 +307,34 @@ const deleteProperty = async (req, res) => {
     }
 }
 
+// Change property state
+
+const changeState = async (req, res) => {
+
+    const {id} = req.params
+
+    // Property Exist?
+    const property = await Property.findByPk(id);
+
+    if (!property) {
+        return res.redirect('/my-properties');
+    }
+    
+    // Is property user author?
+    if ( property.userId.toString()!== req.user.id.toString() ) {
+        return res.redirect('/my-properties');
+    }
+
+    // Update property status
+    property.published = !property.published
+
+    await property.save();
+
+    res.json({
+        result: true
+    })
+}
+
 // Show one property
 
 const showProperty = async (req, res) => {
@@ -321,7 +350,7 @@ const showProperty = async (req, res) => {
     });
 
     if ( !property || !property.published ) {
-        return res.redirect('/properties');
+        return res.redirect('/404');
     }
 
     res.render('properties/show', {
@@ -373,17 +402,6 @@ const sendMessage = async (req, res) => {
         propertyId,
         userId
     });
-
-    /* res.render('properties/show', {
-        page: property.title,
-        property,
-        csrfToken: req.csrfToken(),
-        user: req.user,
-        isSeller: isSeller(req.user?.id, property.userId ),
-        send: true
-    }); */
-
-
     res.redirect('/');
 }
 
@@ -391,35 +409,32 @@ const sendMessage = async (req, res) => {
 
 const seeMessages = async (req, res) => {
 
-    res.send('Read inbox messages');
+    const { id } = req.params
 
-    /* const {id} = req.params
-
-    // Validar que la propiedad exista
-    const propiedad = await Propiedad.findByPk(id, {
+    // Property exists?
+    const property = await Property.findByPk(id, {
         include: [
-            { model: Mensaje, as: 'mensajes', 
+            { model: Message, as: 'messages', 
                 include: [
-                    {model: Usuario.scope('eliminarPassword'), as: 'usuario'}
+                    { model: User.scope('deletePassword'), as: 'user' }
                 ]
             },
         ],
     })
 
-    if(!propiedad) {
-        return res.redirect('/mis-propiedades')
+    if(!property) {
+        return res.redirect('/my-properties')
     }
 
-    // Revisar que quien visita la URl, es quien creo la propiedad
-    if(propiedad.usuarioId.toString() !== req.usuario.id.toString() ) {
-        return res.redirect('/mis-propiedades')
+    if(property.userId.toString() !== req.user.id.toString() ) {
+        return res.redirect('/my-properties')
     }
 
-    res.render('propiedades/mensajes', {
-        pagina: 'Mensajes',
-        mensajes: propiedad.mensajes,
-        formatearFecha
-    }) */
+    res.render('properties/messages', {
+        page: 'Messages',
+        messages: property.messages,
+        formatDate
+    }) 
 }
 
 export {
@@ -431,6 +446,7 @@ export {
     edit,
     saveEdit,
     deleteProperty,
+    changeState,
     showProperty,
     sendMessage,
     seeMessages

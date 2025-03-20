@@ -9,7 +9,7 @@ block content
     //- pre= JSON.stringify(property, undefined, 2)
 
     div(class="py-5")
-        h1( id="title" class="text-4xl my-10 font-extrabold text-violet-800 text-center")= property.title
+        h1( id="title" class="text-4xl my-10 font-bold text-violet-800 text-center")= property.title
 
         div
             a(href="#" class="font-bold text-fucsiaPalet1 text-lg") Category: 
@@ -26,16 +26,16 @@ block content
 
                     div(class="grid grid-cols-1 md:grid-cols-2")
                         p(class="text-violet-600 font-bold text-lg") WC
-                            span(class="text-gray-400 block text-xl")= property.wc
+                            span(class="text-gray-400 block font-medium")= property.wc
                         
                         p(class="text-violet-600 font-bold text-lg") Rooms
-                            span(class="text-gray-400 block text-xl")= property.rooms
+                            span(class="text-gray-400 block font-medium")= property.rooms
 
                         p(class="text-violet-600 font-bold text-lg") Parking Lots
-                            span(class="text-gray-400 block text-xl")= property.parking
+                            span(class="text-gray-400 block font-medium")= property.parking
 
                         p(class="text-violet-600 font-bold text-lg") Price
-                            span(class="text-gray-400 block text-xl")= property.price.name
+                            span(class="text-gray-400 block font-medium")= property.price.name
 
 
             aside(class="md:w-1/3 bg-white shadow rounded-lg") 

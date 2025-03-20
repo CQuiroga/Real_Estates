@@ -1,15 +1,10 @@
 import express from 'express';
 import { body } from 'express-validator';
 import { admin, 
-    create, 
-    save, 
-    addImage, 
-    storageImage, 
-    edit, 
-    saveEdit, 
-    deleteProperty,
-    showProperty,
-    sendMessage, seeMessages } from '../controllers/propertyController.js';
+    create, save, addImage, 
+    storageImage, edit, saveEdit, 
+    deleteProperty, changeState,
+    showProperty, sendMessage, seeMessages,  } from '../controllers/propertyController.js';
 import protectRoute from '../middleware/protectRoute.js';
 import upload from '../middleware/uploadImages.js';
 import identifyUser from '../middleware/identifyUser.js';
@@ -63,6 +58,16 @@ router.post('/properties/delete/:id',
     protectRoute,
     deleteProperty
 );
+
+// Change property status
+
+router.put('/properties/:id',
+    protectRoute,
+    changeState
+);
+
+
+
 
 // Public zone
 

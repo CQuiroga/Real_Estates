@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 10000 
 
 #CMD ["npm", "run", "dev"]
-CMD ["sh", "-c", "npm run prod"]
+RUN npm start

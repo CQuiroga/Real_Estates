@@ -1,12 +1,28 @@
 header.bg-violet-600.p-4
-        .container.mx-auto.flex.justify-between.items-center
-            a(href="/")
-              h1.text-2xl.text-white.font-extrabold.text-center Real
-                span.font-normal States
+  .container.mx-auto.flex.justify-between.items-center
+    a(href="/")
+      h1.text-2xl.text-white.font-extrabold.text-center Real
+        span.font-normal States
 
-            nav(class="my-5 text-sm md:flex md:items-center md:gap-3 font-bold text-white hidden")
-                a(href="/my-properties") My Properties
-                a(href="") My Profile
-                a(class="py-1 px-5 rounded-md border-2 border-white hover:bg-violet-900" href="/auth/login") LogOut
+    //- Menú para pantallas grandes (siempre visible en md+)
+    nav(class="hidden md:flex md:items-center md:gap-5 font-bold text-white")
+      a(href="/my-properties" class="hover:text-gray-200 transition") My Properties
+      a(href="/auth/login" class="py-1 px-5 rounded-md border-2 border-white hover:bg-violet-900 transition") LogOut
 
+    //- Menú hamburguesa (solo en móviles)
+    div(class="md:hidden") 
+      input#menu-toggle(type="checkbox" class="hidden peer")
 
+      //- Botón de menú hamburguesa
+      label(for="menu-toggle" class="bg-violet-800 text-white rounded-md cursor-pointer w-2")
+        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5")
+          path(fill-rule="evenodd" d="M2 4.75A.75.75 0 0 1 2.75 4h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 4.75ZM2 10a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 10Zm0 5.25a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd")
+
+      //- Menú desplegable (se activa con peer)
+      nav(class="hidden peer-checked:flex peer-checked:flex-col peer-checked:absolute peer-checked:top-3 peer-checked:right-0 peer-checked:w-30 peer-checked:bg-violet-700 peer-checked:p-2 peer-checked:rounded-lg text-white")
+        ul(class="flex flex-col items-end space-y-3")  
+          li  
+            a(href="/my-properties" class="block px-4 py-2 hover:bg-violet-900 rounded-md transition") My Properties
+            form(action="/auth/close-session", method="post") 
+              input(type="hidden" name="_csrf" value=csrfToken)
+              input(type="submit" class="block w-full text-right px-4 py-2 hover:bg-violet-900 rounded-md cursor-pointer transition" value="LogOut")

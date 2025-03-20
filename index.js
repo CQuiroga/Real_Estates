@@ -3,6 +3,8 @@ import csrf from 'csurf';
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
 import propertiesRoutes from './routes/propertiesRoutes.js';
+import appRoutes from './routes/appRoutes.js';
+import apiRoutes from './routes/apiRoutes.js';
 
 import db from './config/db.js';
 
@@ -36,12 +38,10 @@ app.set('views', './views');
 app.use(express.static('public'));
 
 // Routes
+app.use('/', appRoutes);
 app.use('/auth', userRoutes);
 app.use('/', propertiesRoutes);
-
-app.get('/test', (req, res) => {
-    res.send('Todo ok')
-})
+app.use('/api', apiRoutes);
 
 // Port & Start project
 const port = process.env.PORT || 3000;

@@ -79,6 +79,10 @@ const auth = async (req, res) => {
     
 }
 
+const closeSession = (req, res) => {
+    return res.clearCookie('_token').status(200).redirect('/auth/login')
+}
+
 const formRegister = (req, res) => {
     res.render('auth/register', {
         page: 'Create Account',
@@ -293,11 +297,12 @@ const newPassword = async (req, res) => {
 export {
     formLogin,
     auth,
+    closeSession,
     formRegister,
     register,
     formForgotPassword,
     confirm,
     resetPassword,
     verifyToken,
-    newPassword,
+    newPassword
 }

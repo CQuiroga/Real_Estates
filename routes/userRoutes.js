@@ -1,6 +1,7 @@
 import express from 'express';
 import { formLogin,
          auth,
+         closeSession,
          formRegister, 
          register, 
          formForgotPassword,
@@ -14,6 +15,10 @@ const router = express.Router();
 
 router.get('/login', formLogin);
 router.post('/login', auth);
+
+// Logout 
+
+router.post('/close-session', closeSession);
 
 router.get('/register', formRegister);
 router.post('/register', register);

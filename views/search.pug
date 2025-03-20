@@ -1,0 +1,12 @@
+extends ./layout/app
+
+block content
+    section(class="py-5")
+        h2(class="text-center text-4xl font-bold text-violet-600 pt-10")= page
+
+        if properties.length
+            div(class="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-14")
+                each property in properties
+                    include ./templates/card
+        else 
+            p.text-gray-600.font-semibold.py-4.px-6.text-xl.text-center No results found

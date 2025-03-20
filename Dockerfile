@@ -12,7 +12,7 @@ COPY . .
 
 #EXPOSE 3000
 # for Production
-# EXPOSE 10000 
+EXPOSE 10000 
 
 #CMD ["npm", "run", "dev"]
 CMD ["npm", "run", "start"]

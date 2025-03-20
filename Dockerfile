@@ -1,10 +1,12 @@
-FROM node:20-alpine
+# FROM node:20-alpine
+FROM node:20  
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+# RUN npm install
+RUN npm install --omit=optional  
 
 COPY . .
 
@@ -15,4 +17,4 @@ COPY . .
 EXPOSE 10000 
 
 #CMD ["npm", "run", "dev"]
-CMD ["sh", "-c", "npm run prod"]
+CMD ["npm", "run", "prod"]
